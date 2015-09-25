@@ -6,11 +6,11 @@ TAG_PREFIX = usgs-lcmap
 
 all: clean build-all
 
-build-all: TBD
-
-base: debian-base ubuntu-base centos-base
+build-all: rest
 
 rest: debian-py-rest debian-lfe-rest debian-clj-rest
+
+base: debian-base ubuntu-base centos-base
 
 clean:
 	@-docker rm $(shell docker ps -a -q)
@@ -51,7 +51,10 @@ debian-clj-rest: debian-clojure
 # Ubuntu
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+# TBD
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # CentOS
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# TBD
