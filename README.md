@@ -20,7 +20,7 @@ $ docker build -t usgs-lcmap/debian-base debian/base
 or
 
 ```bash
-$ docker build -t usgs-lcmap/cenotos-py-rest centos/python-rest
+$ docker build -t usgs-lcmap/cenotos-py-rest centos/py-rest
 ```
 
 There is also a ``Makefile`` for building images which depend upon other

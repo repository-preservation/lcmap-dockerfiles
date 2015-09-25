@@ -1,8 +1,9 @@
 FROM debian:latest
-MAINTAINER USGS LCMAP <maintainers@lfe.io>
+MAINTAINER USGS LCMAP http://eros.usgs.gov
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get upgrade -y
+RUN apt-get install -y --no-install-recommends \
     apt-utils \
     build-essential \
     ca-certificates \

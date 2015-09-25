@@ -8,8 +8,9 @@ all: clean build-all
 
 build-all: TBD
 
-base:
-	cd debian/base
+base: debian-base ubuntu-base centos-base
+
+rest: debian-py-rest debian-lfe-rest debian-clj-rest
 
 clean:
 	@-docker rm $(shell docker ps -a -q)
@@ -23,28 +24,28 @@ debian-base:
 	docker build -t $(TAG_PREFIX)/debian-base debian/base
 
 debian-py: debian-base
-	docker build -t $(TAG_PREFIX)/debian-python $(TAG_PREFIX)/debian-base
+	docker build -t $(TAG_PREFIX)/debian-python debian/python
 
 debian-py-rest: debian-py
-	docker build -t $(TAG_PREFIX)/debian-py-rest $(TAG_PREFIX)/debian-py
+	docker build -t $(TAG_PREFIX)/debian-py-rest debian/py-rest
 
 debian-erl: debian-base
-	docker build -t $(TAG_PREFIX)/debian-erlang $(TAG_PREFIX)/debian-base
+	docker build -t $(TAG_PREFIX)/debian-erlang debian/erlang
 
 debian-lfe: debian-erl
-	docker build -t $(TAG_PREFIX)/debian-lfe $(TAG_PREFIX)/debian-erlang
+	docker build -t $(TAG_PREFIX)/debian-lfe debian/lfe
 
 debian-lfe-rest: debian-lfe
-	docker build -t $(TAG_PREFIX)/debian-lfe-rest $(TAG_PREFIX)/debian-lfe
+	docker build -t $(TAG_PREFIX)/debian-lfe-rest debian/lfe-rest
 
 debian-java: debian-base
-	docker build -t $(TAG_PREFIX)/debian-java $(TAG_PREFIX)/debian-base
+	docker build -t $(TAG_PREFIX)/debian-java debian/java
 
 debian-clojure: debian-java
-	docker build -t $(TAG_PREFIX)/debian-cloure $(TAG_PREFIX)/debian-java
+	docker build -t $(TAG_PREFIX)/debian-cloure debian/clojure
 
 debian-clj-rest: debian-clojure
-	docker build -t $(TAG_PREFIX)/debian-clj-rest $(TAG_PREFIX)/debian-clojure
+	docker build -t $(TAG_PREFIX)/debian-clj-rest debian/clj-rest
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Ubuntu
