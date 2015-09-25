@@ -1,2 +1,2 @@
-FROM usgs-lcmap/debian-java
+FROM usgs-lcmap/debian-clojure
 MAINTAINER USGS LCMAP http://eros.usgs.gov
