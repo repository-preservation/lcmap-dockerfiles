@@ -11,21 +11,28 @@ development environments. The Docker tag used for all of these images is
 
 ## Use
 
-To create an image from any of the provided Dockerfiles, simple do the following:
+To create an image from any of the provided Dockerfiles, simply do the following:
 
 ```bash
 $ docker build -t usgs-lcmap/debian-base debian/base
 ```
 
-or
+Another example:
 
 ```bash
 $ docker build -t usgs-lcmap/cenotos-py-rest centos/py-rest
 ```
 
 There is also a ``Makefile`` for building images which depend upon other
-``Dockerfile``s in this repo. Example usage:
+``Dockerfile``s in this repo. Example usage for creating images for all
+of the defined ``Dockerfile``s:
 
 ```bash
-$ make rest
+$ make all
+```
+
+For just the base dev images:
+
+```bash
+$ make base
 ```
