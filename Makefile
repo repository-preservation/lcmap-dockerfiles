@@ -8,6 +8,8 @@ all: clean build-all
 
 build-all: rest
 
+jmeter: debian-jmeter
+
 rest: debian-rest ubuntu-rest
 
 debian-rest: debian-py-rest debian-lfe-rest debian-clj-rest
@@ -59,6 +61,9 @@ clojure:
 clj-rest:
 	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-clj-rest $(SYSTEM)/clj-rest
 
+base-jmeter:
+	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-jmeter $(SYSTEM)/jmeter
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Debian
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -89,6 +94,9 @@ debian-clojure: debian-java
 
 debian-clj-rest: debian-clojure
 	@SYSTEM=debian make clj-rest
+
+debian-jmeter: debian-java
+	@SYSTEM=debian make base-jmeter
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Ubuntu
