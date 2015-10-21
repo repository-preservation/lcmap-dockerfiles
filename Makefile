@@ -8,6 +8,10 @@ all: clean build-all
 
 build-all: rest
 
+ccdc: c-ccdc # clj-ccdc py-ccdc
+
+c-ccdc: ubuntu-c-ccdc
+
 jmeter: debian-jmeter
 
 rest: debian-rest ubuntu-rest
@@ -27,7 +31,7 @@ base-build py py-rest erl lfe lfe-rest java clojure clj-rest \
 debian-base debian-py debian-py-rest debian-erl debian-lfe debian-lfe-rest \
 debian-java debian-clojure debian-clj-rest \
 ubuntu-base ubuntu-py ubuntu-py-rest ubuntu-erl ubuntu-lfe ubuntu-lfe-rest \
-ubuntu-java ubuntu-clojure ubuntu-clj-rest
+ubuntu-java ubuntu-clojure ubuntu-clj-rest ccdc c-ccdc base-c-ccdc ubuntu-c-ccdc
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -63,6 +67,9 @@ clj-rest:
 
 base-jmeter:
 	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-jmeter $(SYSTEM)/jmeter
+
+base-c-ccdc:
+	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-c-ccdc $(SYSTEM)/c-ccdc
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Debian
@@ -128,6 +135,9 @@ ubuntu-clojure: ubuntu-java
 
 ubuntu-clj-rest: ubuntu-clojure
 	@SYSTEM=ubuntu make clj-rest
+
+ubuntu-c-ccdc: ubuntu-base
+	@SYSTEM=ubuntu make base-c-ccdc
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # CentOS
