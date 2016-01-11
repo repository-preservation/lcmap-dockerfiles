@@ -12,6 +12,8 @@ ccdc: c-ccdc # clj-ccdc py-ccdc
 
 c-ccdc: ubuntu-c-ccdc
 
+sample-docker-model: debian-docker-sample-process
+
 jmeter: debian-jmeter
 
 rest: debian-rest ubuntu-rest
@@ -31,7 +33,8 @@ base-build py py-rest erl lfe lfe-rest java clojure clj-rest \
 debian-base debian-py debian-py-rest debian-erl debian-lfe debian-lfe-rest \
 debian-java debian-clojure debian-clj-rest \
 ubuntu-base ubuntu-py ubuntu-py-rest ubuntu-erl ubuntu-lfe ubuntu-lfe-rest \
-ubuntu-java ubuntu-clojure ubuntu-clj-rest ccdc c-ccdc base-c-ccdc ubuntu-c-ccdc
+ubuntu-java ubuntu-clojure ubuntu-clj-rest ccdc c-ccdc base-c-ccdc ubuntu-c-ccdc \
+docker-sample-process debian-docker-sample-process
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -46,6 +49,9 @@ py:
 
 py-rest:
 	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-py-rest $(SYSTEM)/py-rest
+
+docker-sample-process:
+	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-docker-sample-process $(SYSTEM)/docker-sample-process
 
 erl:
 	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-erlang $(SYSTEM)/erlang
@@ -83,6 +89,9 @@ debian-py: debian-base
 
 debian-py-rest: debian-py
 	@SYSTEM=debian make py-rest
+
+debian-docker-sample-process: debian-py
+	@SYSTEM=debian make docker-sample-process
 
 debian-erl: debian-base
 	@SYSTEM=debian make erl
