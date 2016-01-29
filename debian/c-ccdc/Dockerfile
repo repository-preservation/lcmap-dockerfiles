@@ -1,4 +1,4 @@
-FROM usgs-lcmap/ubuntu-base
+FROM usgs-lcmap/debian-base
 MAINTAINER USGS LCMAP http://eros.usgs.gov
 
 RUN apt-get install -y libgsl0-dev libgsl0ldbl gsl-bin \

@@ -10,7 +10,7 @@ build-all: rest
 
 ccdc: c-ccdc # clj-ccdc py-ccdc
 
-c-ccdc: ubuntu-c-ccdc
+c-ccdc: debian-c-ccdc ubuntu-c-ccdc
 
 sample-docker-model: debian-docker-sample-process
 
@@ -28,13 +28,15 @@ clean:
 	@-docker rm $(shell docker ps -a -q)
 	@-docker rmi $(shell docker images -q --filter 'dangling=true')
 
+publish: c-ccdc debian-docker-sample-process
+
 .PHONY: all build-all rest debian-rest ubuntu-rest centos-rest base clean \
 base-build py py-rest erl lfe lfe-rest java clojure clj-rest \
 debian-base debian-py debian-py-rest debian-erl debian-lfe debian-lfe-rest \
 debian-java debian-clojure debian-clj-rest \
 ubuntu-base ubuntu-py ubuntu-py-rest ubuntu-erl ubuntu-lfe ubuntu-lfe-rest \
 ubuntu-java ubuntu-clojure ubuntu-clj-rest ccdc c-ccdc base-c-ccdc ubuntu-c-ccdc \
-docker-sample-process debian-docker-sample-process
+debian-c-ccdc docker-sample-process debian-docker-sample-process
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -113,6 +115,9 @@ debian-clj-rest: debian-clojure
 
 debian-jmeter: debian-java
 	@SYSTEM=debian make base-jmeter
+
+debian-c-ccdc: debian-base
+	@SYSTEM=debian make base-c-ccdc
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Ubuntu
