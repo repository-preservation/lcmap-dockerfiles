@@ -17,6 +17,8 @@ sample-docker-model: debian-docker-sample-process
 
 jmeter: debian-jmeter
 
+python: debian-py ubuntu-py
+
 rest: debian-rest ubuntu-rest
 
 debian-rest: debian-py-rest debian-lfe-rest debian-clj-rest
@@ -29,9 +31,11 @@ clean:
 	@-docker rm $(shell docker ps -a -q)
 	@-docker rmi $(shell docker images -q --filter 'dangling=true')
 
-publish: publish-c-ccdc
+publish: publish-c-ccdc publish-py
 
 publish-c-ccdc: ccdc debian-publish-c-ccdc ubuntu-publish-c-ccdc
+
+publish-py: python debian-publish-py ubuntu-publish-py
 
 .PHONY: all build-all rest debian-rest ubuntu-rest centos-rest base clean \
 base-build py py-rest erl lfe lfe-rest java clojure clj-rest \
@@ -83,8 +87,7 @@ base-c-ccdc:
 	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-c-ccdc $(SYSTEM)/c-ccdc
 
 base-publish:
-	@docker push $(DOCKERHUB_ORG)/$(SYSTEM)-c-ccdc
-#@docker push $(DOCKERHUB_ORG)/$(DOCKERHUB_REPO):$(SYSTEM)
+	@docker push $(DOCKERHUB_ORG)/$(SYSTEM)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Debian
@@ -123,11 +126,14 @@ debian-clj-rest: debian-clojure
 debian-jmeter: debian-java
 	@SYSTEM=debian make base-jmeter
 
-debian-c-ccdc: debian-base
+debian-c-ccdc: debian-py
 	@SYSTEM=debian make base-c-ccdc
 
 debian-publish-c-ccdc:
-	@SYSTEM=debian DOCKERHUB_REPO=lcmap-ccdc make base-publish
+	@SYSTEM=debian-c-ccdc make base-publish
+
+debian-publish-py:
+	@SYSTEM=debian-py make base-publish
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Ubuntu
@@ -160,11 +166,14 @@ ubuntu-clojure: ubuntu-java
 ubuntu-clj-rest: ubuntu-clojure
 	@SYSTEM=ubuntu make clj-rest
 
-ubuntu-c-ccdc: ubuntu-base
+ubuntu-c-ccdc: ubuntu-py
 	@SYSTEM=ubuntu make base-c-ccdc
 
 ubuntu-publish-c-ccdc:
-	@SYSTEM=ubuntu DOCKERHUB_REPO=lcmap-ccdc make base-publish
+	@SYSTEM=ubuntu-c-ccdc make base-publish
+
+ubuntu-publish-py:
+	@SYSTEM=ubuntu-py make base-publish
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # CentOS
