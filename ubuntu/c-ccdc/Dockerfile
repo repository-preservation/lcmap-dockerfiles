@@ -1,4 +1,4 @@
-FROM usgs-lcmap/ubuntu-python
+FROM usgseros/ubuntu-python
 MAINTAINER USGS LCMAP http://eros.usgs.gov
 
 RUN apt-get install -y libgsl0-dev libgsl0ldbl gsl-bin \
@@ -13,5 +13,5 @@ RUN cd lcmap-change-detection-c && \
     BIN=$CCDC_BIN make
 
 COPY run.py run.py
-ENTRYPOINT ["python3", "run.py"]
+ENTRYPOINT ["python3", "-u", "run.py"]
 

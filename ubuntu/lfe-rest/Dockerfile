@@ -1,4 +1,4 @@
-FROM usgs-lcmap/ubuntu-lfe
+FROM usgseros/ubuntu-lfe
 MAINTAINER USGS LCMAP http://eros.usgs.gov
 
 RUN apt-get install -y libpam0g-dev

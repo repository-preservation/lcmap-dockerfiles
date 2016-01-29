@@ -1,4 +1,4 @@
-FROM usgs-lcmap/debian-python
+FROM usgseros/debian-python
 MAINTAINER USGS LCMAP http://eros.usgs.gov
 
 RUN apt-get install -y bsdmainutils

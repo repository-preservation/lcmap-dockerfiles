@@ -133,7 +133,7 @@ debian-publish-c-ccdc:
 	@SYSTEM=debian-c-ccdc make base-publish
 
 debian-publish-py:
-	@SYSTEM=debian-py make base-publish
+	@SYSTEM=debian-python make base-publish
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Ubuntu
@@ -173,7 +173,7 @@ ubuntu-publish-c-ccdc:
 	@SYSTEM=ubuntu-c-ccdc make base-publish
 
 ubuntu-publish-py:
-	@SYSTEM=ubuntu-py make base-publish
+	@SYSTEM=ubuntu-python make base-publish
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # CentOS

@@ -1,4 +1,4 @@
-FROM usgs-lcmap/debian-java
+FROM usgseros/debia-java
 MAINTAINER USGS LCMAP http://eros.usgs.gov
 
 ENV SERVER_PORT 2001

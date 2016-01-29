@@ -1,4 +1,4 @@
-FROM usgs-lcmap/ubuntu-java
+FROM usgseros/ubuntu-java
 MAINTAINER USGS LCMAP http://eros.usgs.gov
 
 ENV LEIN_ROOT ok

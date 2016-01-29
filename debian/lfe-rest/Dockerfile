@@ -1,4 +1,4 @@
-FROM usgs-lcmap/debian-lfe
+FROM usgseros/debian-lfe
 MAINTAINER USGS LCMAP http://eros.usgs.gov
 
 RUN apt-get install -y libpam0g-dev

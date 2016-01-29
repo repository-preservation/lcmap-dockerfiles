@@ -1,4 +1,4 @@
-FROM usgs-lcmap/ubuntu-base
+FROM usgseros/ubuntu-base
 MAINTAINER USGS LCMAP http://eros.usgs.gov
 
 ENV ERLANG_DEB1 erlang-solutions_1.0_all.deb

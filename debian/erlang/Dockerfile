@@ -1,4 +1,4 @@
-FROM usgs-lcmap/debian-base
+FROM usgseros/debian-base
 MAINTAINER USGS LCMAP http://eros.usgs.gov
 
 ENV ERLANG_DEB1 erlang-solutions_1.0_all.deb

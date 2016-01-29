@@ -1,11 +1,11 @@
-FROM usgs-lcmap/debian-erlang
+FROM usgseros/debian-erlang
 MAINTAINER USGS LCMAP http://eros.usgs.gov
 
 ENV LFE_HOME /opt/erlang/lfe
 ENV ERL_LIBS $ERL_LIBS:$LFE_HOME:/root/.lfe/lib/ltest:/root/.lfe/lib/lutil:/root/.lfe/lib/lcfg
 ENV PATH=$LFE_HOME/bin:$PATH
 
-RUN mkdir -p /root/.lfe/lib      
+RUN mkdir -p /root/.lfe/lib
 RUN mkdir -p $LFE_HOME
 RUN cd `dirname $LFE_HOME` && \
       git clone https://github.com/lfe/lfe.git && \
