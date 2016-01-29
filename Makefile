@@ -1,4 +1,5 @@
-TAG_PREFIX = usgs-lcmap
+TAG_PREFIX = usgseros
+DOCKERHUB_ORG = $(TAG_PREFIX)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # General targets
@@ -28,7 +29,9 @@ clean:
 	@-docker rm $(shell docker ps -a -q)
 	@-docker rmi $(shell docker images -q --filter 'dangling=true')
 
-publish: c-ccdc debian-docker-sample-process
+publish: publish-c-ccdc
+
+publish-c-ccdc: ccdc debian-publish-c-ccdc ubuntu-publish-c-ccdc
 
 .PHONY: all build-all rest debian-rest ubuntu-rest centos-rest base clean \
 base-build py py-rest erl lfe lfe-rest java clojure clj-rest \
@@ -79,6 +82,10 @@ base-jmeter:
 base-c-ccdc:
 	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-c-ccdc $(SYSTEM)/c-ccdc
 
+base-publish:
+	@docker push $(DOCKERHUB_ORG)/$(SYSTEM)-c-ccdc
+#@docker push $(DOCKERHUB_ORG)/$(DOCKERHUB_REPO):$(SYSTEM)
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Debian
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -119,6 +126,9 @@ debian-jmeter: debian-java
 debian-c-ccdc: debian-base
 	@SYSTEM=debian make base-c-ccdc
 
+debian-publish-c-ccdc:
+	@SYSTEM=debian DOCKERHUB_REPO=lcmap-ccdc make base-publish
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Ubuntu
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -152,6 +162,9 @@ ubuntu-clj-rest: ubuntu-clojure
 
 ubuntu-c-ccdc: ubuntu-base
 	@SYSTEM=ubuntu make base-c-ccdc
+
+ubuntu-publish-c-ccdc:
+	@SYSTEM=ubuntu DOCKERHUB_REPO=lcmap-ccdc make base-publish
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # CentOS
