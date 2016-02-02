@@ -25,17 +25,30 @@ debian-rest: debian-py-rest debian-lfe-rest debian-clj-rest
 
 ubuntu-rest: ubuntu-py-rest ubuntu-lfe-rest ubuntu-clj-rest
 
+java: ubuntu-java
+
+clojure: ubuntu-clj
+
+gis: ubuntu-gis ubuntu-gis-clj
+
 base: debian-base ubuntu-base centos-base
 
 clean:
 	@-docker rm $(shell docker ps -a -q)
 	@-docker rmi $(shell docker images -q --filter 'dangling=true')
 
-publish: publish-c-ccdc publish-py
+publish: publish-c-ccdc publish-py publish-java publish-clj publish-gis
 
 publish-c-ccdc: ccdc debian-publish-c-ccdc ubuntu-publish-c-ccdc
 
 publish-py: python debian-publish-py ubuntu-publish-py
+
+publish-java: ubuntu-publish-java
+
+publish-clj: ubuntu-publish-clj
+
+publish-gis: gis ubuntu-publish-gis ubuntu-publish-py-gis ubuntu-publish-qgis \
+ubuntu-publish-clj-gis
 
 .PHONY: all build-all rest debian-rest ubuntu-rest centos-rest base clean \
 base-build py py-rest erl lfe lfe-rest java clojure clj-rest \
@@ -43,12 +56,16 @@ debian-base debian-py debian-py-rest debian-erl debian-lfe debian-lfe-rest \
 debian-java debian-clojure debian-clj-rest \
 ubuntu-base ubuntu-py ubuntu-py-rest ubuntu-erl ubuntu-lfe ubuntu-lfe-rest \
 ubuntu-java ubuntu-clojure ubuntu-clj-rest ccdc c-ccdc base-c-ccdc ubuntu-c-ccdc \
-debian-c-ccdc docker-sample-process debian-docker-sample-process
-
+debian-c-ccdc docker-sample-process debian-docker-sample-process \
+ubuntu-gis ubuntu-qgis ubuntu-gis-py ubuntu-gis-clj \
+ubuntu-publish-java ubuntu-publish-clj ubuntu-publish-gis ubuntu-publish-clj-gis
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Common
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Note that the format of these base/common targets is:
+# 	$ docker build -t <final image tag> <Dockerfile parent directory>
 
 base-build:
 	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-base $(SYSTEM)/base
@@ -86,8 +103,17 @@ base-jmeter:
 base-c-ccdc:
 	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-c-ccdc $(SYSTEM)/c-ccdc
 
+base-gis:
+	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-gis $(SYSTEM)/gis
+
+base-qgis:
+	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-qgis $(SYSTEM)/qgis
+
+base-frag-gis:
+	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-gis-$(TAG_FRAGMENT) $(SYSTEM)/$(TAG_FRAGMENT)-gis
+
 base-publish:
-	@docker push $(DOCKERHUB_ORG)/$(SYSTEM)
+	@docker push $(DOCKERHUB_ORG)/$(REPO)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Debian
@@ -130,10 +156,10 @@ debian-c-ccdc: debian-py
 	@SYSTEM=debian make base-c-ccdc
 
 debian-publish-c-ccdc:
-	@SYSTEM=debian-c-ccdc make base-publish
+	@REPO=debian-c-ccdc make base-publish
 
 debian-publish-py:
-	@SYSTEM=debian-python make base-publish
+	@REPO=debian-python make base-publish
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Ubuntu
@@ -169,11 +195,41 @@ ubuntu-clj-rest: ubuntu-clojure
 ubuntu-c-ccdc: ubuntu-py
 	@SYSTEM=ubuntu make base-c-ccdc
 
+ubuntu-gis:
+	@SYSTEM=ubuntu make base-gis
+
+ubuntu-gis-py: ubuntu-gis
+	@SYSTEM=ubuntu TAG_FRAGMENT=py make base-frag-gis
+
+ubuntu-gis-clj: ubuntu-gis
+	@SYSTEM=ubuntu TAG_FRAGMENT=clj make base-frag-gis
+
+ubuntu-qgis: ubuntu-gis-py
+	@SYSTEM=ubuntu make base-qgis
+
 ubuntu-publish-c-ccdc:
-	@SYSTEM=ubuntu-c-ccdc make base-publish
+	@REPO=ubuntu-c-ccdc make base-publish
 
 ubuntu-publish-py:
-	@SYSTEM=ubuntu-python make base-publish
+	-@REPO=ubuntu-python make base-publish
+
+ubuntu-publish-java:
+	-@REPO=ubuntu-java make base-publish
+
+ubuntu-publish-clj:
+	-@REPO=ubuntu-clj make base-publish
+
+ubuntu-publish-gis:
+	-@REPO=ubuntu-gis make base-publish
+
+ubuntu-publish-qgis:
+	-@REPO=ubuntu-qgis make base-publish
+
+ubuntu-publish-py-gis:
+	-@REPO=ubuntu-gis-py make base-publish
+
+ubuntu-publish-clj-gis:
+	-@REPO=ubuntu-gis-clj make base-publish
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # CentOS
