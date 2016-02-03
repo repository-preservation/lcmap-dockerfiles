@@ -9,10 +9,6 @@ all: clean build-all
 
 build-all: rest
 
-ccdc: c-ccdc # clj-ccdc py-ccdc
-
-c-ccdc: debian-c-ccdc ubuntu-c-ccdc
-
 sample-docker-model: debian-docker-sample-process
 
 jmeter: debian-jmeter
@@ -37,9 +33,7 @@ clean:
 	@-docker rm $(shell docker ps -a -q)
 	@-docker rmi $(shell docker images -q --filter 'dangling=true')
 
-publish: publish-c-ccdc publish-py publish-java publish-clj publish-gis
-
-publish-c-ccdc: ccdc debian-publish-c-ccdc ubuntu-publish-c-ccdc
+publish: publish-py publish-java publish-clj publish-gis
 
 publish-py: python debian-publish-py ubuntu-publish-py
 
@@ -55,8 +49,8 @@ base-build py py-rest erl lfe lfe-rest java clojure clj-rest \
 debian-base debian-py debian-py-rest debian-erl debian-lfe debian-lfe-rest \
 debian-java debian-clojure debian-clj-rest \
 ubuntu-base ubuntu-py ubuntu-py-rest ubuntu-erl ubuntu-lfe ubuntu-lfe-rest \
-ubuntu-java ubuntu-clojure ubuntu-clj-rest ccdc c-ccdc base-c-ccdc ubuntu-c-ccdc \
-debian-c-ccdc docker-sample-process debian-docker-sample-process \
+ubuntu-java ubuntu-clojure ubuntu-clj-rest \
+docker-sample-process debian-docker-sample-process \
 ubuntu-gis ubuntu-qgis ubuntu-gis-py ubuntu-gis-clj \
 ubuntu-publish-java ubuntu-publish-clj ubuntu-publish-gis ubuntu-publish-clj-gis
 
@@ -99,9 +93,6 @@ clj-rest:
 
 base-jmeter:
 	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-jmeter $(SYSTEM)/jmeter
-
-base-c-ccdc:
-	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-c-ccdc $(SYSTEM)/c-ccdc
 
 base-gis:
 	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-gis $(SYSTEM)/gis
@@ -152,12 +143,6 @@ debian-clj-rest: debian-clojure
 debian-jmeter: debian-java
 	@SYSTEM=debian make base-jmeter
 
-debian-c-ccdc: debian-py
-	@SYSTEM=debian make base-c-ccdc
-
-debian-publish-c-ccdc:
-	@REPO=debian-c-ccdc make base-publish
-
 debian-publish-py:
 	@REPO=debian-python make base-publish
 
@@ -192,9 +177,6 @@ ubuntu-clojure: ubuntu-java
 ubuntu-clj-rest: ubuntu-clojure
 	@SYSTEM=ubuntu make clj-rest
 
-ubuntu-c-ccdc: ubuntu-py
-	@SYSTEM=ubuntu make base-c-ccdc
-
 ubuntu-gis:
 	@SYSTEM=ubuntu make base-gis
 
@@ -206,9 +188,6 @@ ubuntu-gis-clj: ubuntu-gis
 
 ubuntu-qgis: ubuntu-gis-py
 	@SYSTEM=ubuntu make base-qgis
-
-ubuntu-publish-c-ccdc:
-	@REPO=ubuntu-c-ccdc make base-publish
 
 ubuntu-publish-py:
 	-@REPO=ubuntu-python make base-publish
