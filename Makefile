@@ -9,40 +9,40 @@ all: clean build-all
 
 build-all: rest
 
-sample-docker-model: debian-docker-sample-process
+sample-docker-model-all: debian-docker-sample-process
 
-jmeter: debian-jmeter
+jmeter-all: debian-jmeter
 
-python: debian-py ubuntu-py
+python-all: debian-py ubuntu-py
 
-rest: debian-rest ubuntu-rest
+rest-all: debian-rest ubuntu-rest
 
 debian-rest: debian-py-rest debian-lfe-rest debian-clj-rest
 
 ubuntu-rest: ubuntu-py-rest ubuntu-lfe-rest ubuntu-clj-rest
 
-java: ubuntu-java
+java-all: debian-java
 
-clojure: ubuntu-clj
+clojure-all: debian-clj
 
-gis: ubuntu-gis ubuntu-gis-clj
+gis-all: ubuntu-gis ubuntu-gis-clj
 
-base: debian-base ubuntu-base centos-base
+base-all: debian-base ubuntu-base centos-base
 
 clean:
 	@-docker rm $(shell docker ps -a -q)
 	@-docker rmi $(shell docker images -q --filter 'dangling=true')
 
-publish: publish-py publish-java publish-clj publish-gis
+publish-all: publish-py publish-java publish-clj publish-gis
 
-publish-py: python debian-publish-py ubuntu-publish-py
+publish-py: python-all debian-publish-py ubuntu-publish-py
 
-publish-java: ubuntu-publish-java
+publish-java: java-all debian-publish-java
 
-publish-clj: ubuntu-publish-clj
+publish-clj: clojure-all debian-publish-clj
 
-publish-gis: gis ubuntu-publish-gis ubuntu-publish-py-gis ubuntu-publish-qgis \
-ubuntu-publish-clj-gis
+publish-gis: gis-all ubuntu-publish-gis ubuntu-publish-py-gis ubuntu-publish-qgis \
+ubuntu-publish-clj-gis debian-publish-gis debian-publish-clj-gis
 
 .PHONY: all build-all rest debian-rest ubuntu-rest centos-rest base clean \
 base-build py py-rest erl lfe lfe-rest java clojure clj-rest \
@@ -85,8 +85,8 @@ lfe-rest:
 java:
 	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-java $(SYSTEM)/java
 
-clojure:
-	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-clojure $(SYSTEM)/clojure
+clj:
+	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-clj $(SYSTEM)/clojure
 
 clj-rest:
 	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-clj-rest $(SYSTEM)/clj-rest
@@ -134,8 +134,8 @@ debian-lfe-rest: debian-lfe
 debian-java: debian-base
 	@SYSTEM=debian make java
 
-debian-clojure: debian-java
-	@SYSTEM=debian make clojure
+debian-clj: debian-java
+	@SYSTEM=debian make clj
 
 debian-clj-rest: debian-clojure
 	@SYSTEM=debian make clj-rest
@@ -145,6 +145,12 @@ debian-jmeter: debian-java
 
 debian-publish-py:
 	@REPO=debian-python make base-publish
+
+debian-publish-java:
+	-@REPO=debian-java make base-publish
+
+debian-publish-clj:
+	-@REPO=debian-clj make base-publish
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Ubuntu
