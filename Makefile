@@ -25,7 +25,7 @@ java-all: debian-java
 
 clojure-all: debian-clj
 
-gis-all: ubuntu-gis ubuntu-gis-clj
+gis-all: ubuntu-gis ubuntu-gis-clj ubuntu-gis-py ubuntu-gis-notebooks
 
 base-all: debian-base ubuntu-base centos-base
 
@@ -42,7 +42,8 @@ publish-java: java-all debian-publish-java
 publish-clj: clojure-all debian-publish-clj
 
 publish-gis: gis-all ubuntu-publish-gis ubuntu-publish-py-gis ubuntu-publish-qgis \
-ubuntu-publish-clj-gis debian-publish-gis debian-publish-clj-gis
+ubuntu-publish-clj-gis ubuntu-publish-notebooks-gis \
+debian-publish-gis debian-publish-clj-gis
 
 .PHONY: all build-all rest debian-rest ubuntu-rest centos-rest base clean \
 base-build py py-rest erl lfe lfe-rest java clojure clj-rest \
@@ -189,6 +190,9 @@ ubuntu-gis:
 ubuntu-gis-py: ubuntu-gis
 	@SYSTEM=ubuntu TAG_FRAGMENT=py make base-frag-gis
 
+ubuntu-gis-notebooks: ubuntu-gis-py
+	@SYSTEM=ubuntu TAG_FRAGMENT=notebooks make base-frag-gis
+
 ubuntu-gis-clj: ubuntu-gis
 	@SYSTEM=ubuntu TAG_FRAGMENT=clj make base-frag-gis
 
@@ -212,6 +216,9 @@ ubuntu-publish-qgis:
 
 ubuntu-publish-py-gis:
 	-@REPO=ubuntu-gis-py make base-publish
+
+ubuntu-publish-notebooks-gis:
+	-@REPO=ubuntu-gis-notebooks make base-publish
 
 ubuntu-publish-clj-gis:
 	-@REPO=ubuntu-gis-clj make base-publish
