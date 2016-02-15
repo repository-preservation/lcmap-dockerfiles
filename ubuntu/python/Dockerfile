@@ -1,4 +1,5 @@
 FROM usgseros/ubuntu-base
 MAINTAINER USGS LCMAP http://eros.usgs.gov
 
-RUN apt-get install -y python3.4 python3.4-dev python3.4-dbg python3-pip
+RUN apt-get install -y \
+    python python-dev python3 python3-dev
