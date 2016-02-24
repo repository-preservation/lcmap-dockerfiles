@@ -49,17 +49,9 @@ RUN pip3 install --no-cache-dir /jupyter-notebook && \
     pip3 install widgetsnbextension
 
 RUN mkdir ~/notebooks
-RUN mkdir ~/noteboook-profile
 
 # Add a notebook profile.
 RUN jupyter notebook --generate-config
 
 EXPOSE 1078
-ENTRYPOINT ["jupyter", \
-            "notebook", \
-            "--no-browser", \
-            "-y", \
-            "--ip=0.0.0.0", \
-            "--notebook-dir=~/notebooks"]
-CMD ["--port=1078", \
-     "--log-level=INFO"]
+CMD "jupyter notebook --no-browser -y --ip=0.0.0.0 --notebook-dir=~/notebooks --port=1078 --log-level=INFO"
