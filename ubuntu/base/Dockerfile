@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:14.04
 MAINTAINER USGS LCMAP http://eros.usgs.gov
 
 ENV DEBIAN_FRONTEND noninteractive
