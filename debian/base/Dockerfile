@@ -1,4 +1,4 @@
-FROM debian:latest
+FROM debian:jessie
 MAINTAINER USGS LCMAP http://eros.usgs.gov
 
 ENV DEBIAN_FRONTEND noninteractive
