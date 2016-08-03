@@ -1,4 +1,4 @@
-FROM usgseros/debian-base
+FROM usgseros/debian-base:0.5.0
 MAINTAINER USGS LCMAP http://eros.usgs.gov
 
 RUN apt-get install -y openjdk-7-jdk

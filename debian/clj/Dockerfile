@@ -1,4 +1,4 @@
-FROM usgseros/debian-java
+FROM usgseros/debian-java:0.5.0
 MAINTAINER USGS LCMAP http://eros.usgs.gov
 
 ENV LEIN_ROOT ok
