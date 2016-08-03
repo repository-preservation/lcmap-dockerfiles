@@ -24,7 +24,7 @@ ubuntu-rest: ubuntu-py-rest ubuntu-lfe-rest ubuntu-clj-rest
 
 java-all: debian-java ubuntu-java
 
-clojure-all: debian-clj
+clojure-all: debian-clj ubuntu-clj
 
 gis-all: ubuntu-gis ubuntu-gis-clj ubuntu-gis-py ubuntu-gis-notebooks
 
@@ -49,9 +49,9 @@ debian-publish-gis debian-publish-clj-gis
 .PHONY: all build-all rest debian-rest ubuntu-rest centos-rest base clean \
 base-build py py-rest erl lfe lfe-rest java clojure clj-rest \
 debian-base debian-py debian-py-rest debian-erl debian-lfe debian-lfe-rest \
-debian-java debian-clojure debian-clj-rest \
+debian-java debian-clj debian-clj-rest \
 ubuntu-base ubuntu-py ubuntu-py-rest ubuntu-erl ubuntu-lfe ubuntu-lfe-rest \
-ubuntu-java ubuntu-clojure ubuntu-clj-rest \
+ubuntu-java ubuntu-clj ubuntu-clj-rest \
 docker-sample-process debian-docker-sample-process \
 ubuntu-gis ubuntu-qgis ubuntu-gis-py ubuntu-gis-clj \
 ubuntu-publish-java ubuntu-publish-clj ubuntu-publish-gis ubuntu-publish-clj-gis
@@ -88,7 +88,7 @@ java:
 	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-java:$(VERSION) $(SYSTEM)/java
 
 clj:
-	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-clj:$(VERSION) $(SYSTEM)/clojure
+	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-clj:$(VERSION) $(SYSTEM)/clj
 
 clj-rest:
 	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-clj-rest:$(VERSION) $(SYSTEM)/clj-rest
@@ -139,7 +139,7 @@ debian-java: debian-base
 debian-clj: debian-java
 	@SYSTEM=debian make clj
 
-debian-clj-rest: debian-clojure
+debian-clj-rest: debian-clj
 	@SYSTEM=debian make clj-rest
 
 debian-jmeter: debian-java
@@ -185,10 +185,10 @@ ubuntu-lfe-rest: ubuntu-lfe
 ubuntu-java: ubuntu-base
 	@SYSTEM=ubuntu make java
 
-ubuntu-clojure: ubuntu-java
-	@SYSTEM=ubuntu make clojure
+ubuntu-clj: ubuntu-java
+	@SYSTEM=ubuntu make clj
 
-ubuntu-clj-rest: ubuntu-clojure
+ubuntu-clj-rest: ubuntu-clj
 	@SYSTEM=ubuntu make clj-rest
 
 ubuntu-gis:
@@ -205,6 +205,12 @@ ubuntu-gis-clj: ubuntu-gis
 
 ubuntu-qgis: ubuntu-gis-py
 	@SYSTEM=ubuntu make base-qgis
+
+ubuntu-publish-base:
+	-@REPO=ubuntu-base make base-publish
+
+ubuntu-publish-java:
+	-@REPO=ubuntu-java make base-publish
 
 ubuntu-publish-py:
 	-@REPO=ubuntu-python make base-publish
