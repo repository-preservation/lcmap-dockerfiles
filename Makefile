@@ -1,5 +1,6 @@
 TAG_PREFIX = usgseros
 DOCKERHUB_ORG = $(TAG_PREFIX)
+VERSION = 0.5.0
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # General targets
@@ -21,7 +22,7 @@ debian-rest: debian-py-rest debian-lfe-rest debian-clj-rest
 
 ubuntu-rest: ubuntu-py-rest ubuntu-lfe-rest ubuntu-clj-rest
 
-java-all: debian-java
+java-all: debian-java ubuntu-java
 
 clojure-all: debian-clj
 
@@ -63,49 +64,49 @@ ubuntu-publish-java ubuntu-publish-clj ubuntu-publish-gis ubuntu-publish-clj-gis
 # 	$ docker build -t <final image tag> <Dockerfile parent directory>
 
 base-build:
-	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-base $(SYSTEM)/base
+	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-base:$(VERSION) $(SYSTEM)/base
 
 py:
-	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-python $(SYSTEM)/python
+	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-python:$(VERSION) $(SYSTEM)/python
 
 py-rest:
-	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-py-rest $(SYSTEM)/py-rest
+	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-py-rest:$(VERSION) $(SYSTEM)/py-rest
 
 docker-sample-process:
-	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-docker-sample-process $(SYSTEM)/docker-sample-process
+	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-docker-sample-process:$(VERSION) $(SYSTEM)/docker-sample-process
 
 erl:
-	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-erlang $(SYSTEM)/erlang
+	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-erlang:$(VERSION) $(SYSTEM)/erlang
 
 lfe:
-	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-lfe $(SYSTEM)/lfe
+	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-lfe:$(VERSION) $(SYSTEM)/lfe
 
 lfe-rest:
-	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-lfe-rest $(SYSTEM)/lfe-rest
+	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-lfe-rest:$(VERSION) $(SYSTEM)/lfe-rest
 
 java:
-	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-java $(SYSTEM)/java
+	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-java:$(VERSION) $(SYSTEM)/java
 
 clj:
-	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-clj $(SYSTEM)/clojure
+	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-clj:$(VERSION) $(SYSTEM)/clojure
 
 clj-rest:
-	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-clj-rest $(SYSTEM)/clj-rest
+	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-clj-rest:$(VERSION) $(SYSTEM)/clj-rest
 
 base-jmeter:
-	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-jmeter $(SYSTEM)/jmeter
+	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-jmeter:$(VERSION) $(SYSTEM)/jmeter
 
 base-gis:
-	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-gis $(SYSTEM)/gis
+	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-gis:$(VERSION) $(SYSTEM)/gis
 
 base-qgis:
-	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-qgis $(SYSTEM)/qgis
+	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-qgis:$(VERSION) $(SYSTEM)/qgis
 
 base-frag-gis:
-	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-gis-$(TAG_FRAGMENT) $(SYSTEM)/$(TAG_FRAGMENT)-gis
+	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-gis-$(TAG_FRAGMENT):$(VERSION) $(SYSTEM)/$(TAG_FRAGMENT)-gis
 
 base-publish:
-	@docker push $(DOCKERHUB_ORG)/$(REPO)
+	@docker push $(DOCKERHUB_ORG)/$(REPO):$(VERSION)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Debian
@@ -144,6 +145,9 @@ debian-clj-rest: debian-clojure
 debian-jmeter: debian-java
 	@SYSTEM=debian make base-jmeter
 
+debian-publish-base:
+	@REPO=debian-base make base-publish
+
 debian-publish-py:
 	@REPO=debian-python make base-publish
 
@@ -152,6 +156,9 @@ debian-publish-java:
 
 debian-publish-clj:
 	-@REPO=debian-clj make base-publish
+
+debian-publish-clj-rest:
+	-@REPO=debian-clj-rest make base-publish
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Ubuntu
