@@ -1,7 +1,6 @@
 FROM usgseros/ubuntu-base:0.5.0
 MAINTAINER USGS LCMAP http://eros.usgs.gov
 
-RUN echo bust it!
 RUN apt-get update
 RUN apt-get install -y openjdk-7-jdk
 RUN apt-get install -y maven2
