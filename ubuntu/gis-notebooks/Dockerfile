@@ -1,4 +1,4 @@
-FROM usgseros/ubuntu-gis-py
+FROM usgseros/ubuntu-gis-py:0.5.0
 MAINTAINER USGS LCMAP http://eros.usgs.gov
 
 # Python binary and source dependencies
