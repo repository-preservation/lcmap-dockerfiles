@@ -2,6 +2,7 @@ FROM usgseros/ubuntu-gis-java:0.5.0
 MAINTAINER USGS LCMAP http://eros.usgs.gov
 
 ENV LEIN_ROOT ok
+ENV LEIN_DOT /root/.lein
 ENV LEIN /usr/local/bin/lein
 
 RUN mkdir $LEIN_DOT
@@ -12,5 +13,6 @@ RUN curl -L -o $LEIN \
     https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
 RUN chmod 755 $LEIN
 RUN $LEIN deps
+RUN $LEIN compile
 RUN rm project.clj
 
