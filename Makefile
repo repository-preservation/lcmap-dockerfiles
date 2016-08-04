@@ -26,7 +26,7 @@ java-all: debian-java ubuntu-java
 
 clojure-all: debian-clj ubuntu-clj
 
-gis-all: ubuntu-gis ubuntu-gis-clj ubuntu-gis-py ubuntu-gis-notebooks
+gis-all: ubuntu-gis ubuntu-gis-java ubuntu-gis-clj ubuntu-gis-py ubuntu-gis-notebooks
 
 base-all: debian-base ubuntu-base centos-base
 
@@ -34,7 +34,7 @@ clean:
 	@-docker rm $(shell docker ps -a -q)
 	@-docker rmi $(shell docker images -q --filter 'dangling=true')
 
-publish-all: publish-py publish-java publish-clj publish-gis
+publish-all: publish-py publish-java publish-clj publish-gis 
 
 publish-py: python-all debian-publish-py ubuntu-publish-py
 
@@ -42,9 +42,10 @@ publish-java: java-all debian-publish-java
 
 publish-clj: clojure-all debian-publish-clj
 
-publish-gis: gis-all ubuntu-publish-gis ubuntu-publish-py-gis ubuntu-publish-qgis \
-ubuntu-publish-clj-gis ubuntu-publish-notebooks-gis \
-debian-publish-gis debian-publish-clj-gis
+publish-gis: gis-all ubuntu-publish-gis ubuntu-publish-gis-py \
+ubuntu-publish-gis-java ubuntu-publish-qgis \
+ubuntu-publish-gis-clj ubuntu-publish-gis-notebooks \
+debian-publish-gis
 
 .PHONY: all build-all rest debian-rest ubuntu-rest centos-rest base clean \
 base-build py py-rest erl lfe lfe-rest java clojure clj-rest \
@@ -54,7 +55,7 @@ ubuntu-base ubuntu-py ubuntu-py-rest ubuntu-erl ubuntu-lfe ubuntu-lfe-rest \
 ubuntu-java ubuntu-clj ubuntu-clj-rest \
 docker-sample-process debian-docker-sample-process \
 ubuntu-gis ubuntu-qgis ubuntu-gis-py ubuntu-gis-clj \
-ubuntu-publish-java ubuntu-publish-clj ubuntu-publish-gis ubuntu-publish-clj-gis
+ubuntu-publish-java ubuntu-publish-clj ubuntu-publish-gis ubuntu-publish-gis-clj
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Common
@@ -103,7 +104,7 @@ base-qgis:
 	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-qgis:$(VERSION) $(SYSTEM)/qgis
 
 base-frag-gis:
-	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-gis-$(TAG_FRAGMENT):$(VERSION) $(SYSTEM)/$(TAG_FRAGMENT)-gis
+	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-gis-$(TAG_FRAGMENT):$(VERSION) $(SYSTEM)/gis-$(TAG_FRAGMENT)
 
 base-publish:
 	@docker push $(DOCKERHUB_ORG)/$(REPO):$(VERSION)
@@ -200,7 +201,10 @@ ubuntu-gis-py: ubuntu-gis
 ubuntu-gis-notebooks: ubuntu-gis-py
 	@SYSTEM=ubuntu TAG_FRAGMENT=notebooks make base-frag-gis
 
-ubuntu-gis-clj: ubuntu-gis
+ubuntu-gis-java: ubuntu-gis
+	@SYSTEM=ubuntu TAG_FRAGMENT=java make base-frag-gis
+
+ubuntu-gis-clj: ubuntu-java
 	@SYSTEM=ubuntu TAG_FRAGMENT=clj make base-frag-gis
 
 ubuntu-qgis: ubuntu-gis-py
@@ -227,13 +231,16 @@ ubuntu-publish-gis:
 ubuntu-publish-qgis:
 	-@REPO=ubuntu-qgis make base-publish
 
-ubuntu-publish-py-gis:
+ubuntu-publish-gis-py:
 	-@REPO=ubuntu-gis-py make base-publish
 
-ubuntu-publish-notebooks-gis:
+ubuntu-publish-gis-notebooks:
 	-@REPO=ubuntu-gis-notebooks make base-publish
 
-ubuntu-publish-clj-gis:
+ubuntu-publish-gis-java:
+	-@REPO=ubuntu-gis-java make base-publish
+
+ubuntu-publish-gis-clj:
 	-@REPO=ubuntu-gis-clj make base-publish
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
