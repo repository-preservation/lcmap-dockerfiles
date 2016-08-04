@@ -1,4 +1,4 @@
-FROM usgseros/ubuntu-gis
+FROM usgseros/ubuntu-gis:0.5.0
 MAINTAINER USGS LCMAP http://eros.usgs.gov
 
 ENV LANGUAGE en_US.UTF-8

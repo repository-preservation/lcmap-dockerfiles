@@ -34,7 +34,7 @@ clean:
 	@-docker rm $(shell docker ps -a -q)
 	@-docker rmi $(shell docker images -q --filter 'dangling=true')
 
-publish-all: publish-py publish-java publish-clj publish-gis 
+publish-all: publish-py publish-java publish-clj publish-gis
 
 publish-py: python-all debian-publish-py ubuntu-publish-py
 
@@ -44,8 +44,7 @@ publish-clj: clojure-all debian-publish-clj
 
 publish-gis: gis-all ubuntu-publish-gis ubuntu-publish-gis-py \
 ubuntu-publish-gis-java ubuntu-publish-qgis \
-ubuntu-publish-gis-clj ubuntu-publish-gis-notebooks \
-debian-publish-gis
+ubuntu-publish-gis-clj ubuntu-publish-gis-notebooks
 
 .PHONY: all build-all rest debian-rest ubuntu-rest centos-rest base clean \
 base-build py py-rest erl lfe lfe-rest java clojure clj-rest \
@@ -68,7 +67,7 @@ base-build:
 	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-base:$(VERSION) $(SYSTEM)/base
 
 py:
-	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-python:$(VERSION) $(SYSTEM)/python
+	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-py:$(VERSION) $(SYSTEM)/py
 
 py-rest:
 	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-py-rest:$(VERSION) $(SYSTEM)/py-rest
@@ -150,7 +149,7 @@ debian-publish-base:
 	@REPO=debian-base make base-publish
 
 debian-publish-py:
-	@REPO=debian-python make base-publish
+	@REPO=debian-py make base-publish
 
 debian-publish-java:
 	-@REPO=debian-java make base-publish
@@ -216,14 +215,11 @@ ubuntu-publish-base:
 ubuntu-publish-java:
 	-@REPO=ubuntu-java make base-publish
 
-ubuntu-publish-py:
-	-@REPO=ubuntu-python make base-publish
-
-ubuntu-publish-java:
-	-@REPO=ubuntu-java make base-publish
-
 ubuntu-publish-clj:
 	-@REPO=ubuntu-clj make base-publish
+
+ubuntu-publish-py:
+	-@REPO=ubuntu-py make base-publish
 
 ubuntu-publish-gis:
 	-@REPO=ubuntu-gis make base-publish
