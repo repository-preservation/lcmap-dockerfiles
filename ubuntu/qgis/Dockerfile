@@ -8,9 +8,9 @@ RUN apt-get install -y --force-yes \
     qgis-provider-grass qgis-providers qgis-providers-common \
     python-qgis python-qgis-common
 RUN apt-get install -y --force-yes \
-    libqgis-analysis2.12.1 libqgis-app2.12.1 \
-    libqgis-core2.12.1 libqgis-customwidgets libqgis-gui2.12.1 \
-    libqgis-networkanalysis2.12.1 \
-    libqgis-server2.12.1 libqgispython2.12.1
+    libqgis-analysis2.16.1 libqgis-app2.16.1 \
+    libqgis-core2.16.1 libqgis-customwidgets libqgis-gui2.16.1 \
+    libqgis-networkanalysis2.16.1 \
+    libqgis-server2.16.1 libqgispython2.16.1
 RUN apt-get install -y --force-yes \
-    grass-gui libqgisgrass7-2.12.1
+    grass-gui libqgisgrass7-2.16.1
