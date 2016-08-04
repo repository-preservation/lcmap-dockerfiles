@@ -1,12 +1,7 @@
-FROM usgseros/ubuntu-gis
+FROM usgseros/ubuntu-gis-java:0.5.0
 MAINTAINER USGS LCMAP http://eros.usgs.gov
 
-RUN apt-get install -y openjdk-7-jdk maven2
-RUN apt-get install -y libgdal-java libpostgis-java libpostgis-java-doc \
-    libpostgis-java libpostgis-java-doc
-
 ENV LEIN_ROOT ok
-ENV LEIN_DOT /.lein
 ENV LEIN /usr/local/bin/lein
 
 RUN mkdir $LEIN_DOT
