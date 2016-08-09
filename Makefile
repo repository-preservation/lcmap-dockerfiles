@@ -26,7 +26,8 @@ java-all: debian-java ubuntu-java
 
 clojure-all: debian-clj ubuntu-clj
 
-gis-all: ubuntu-gis ubuntu-gis-java ubuntu-gis-clj ubuntu-gis-py ubuntu-gis-notebooks
+gis-all: ubuntu-gis ubuntu-gis-java ubuntu-gis-clj ubuntu-gis-py ubuntu-gis-notebooks \
+ubuntu-ndvi
 
 base-all: debian-base ubuntu-base centos-base
 
@@ -44,7 +45,8 @@ publish-clj: clojure-all debian-publish-clj
 
 publish-gis: gis-all ubuntu-publish-gis ubuntu-publish-gis-py \
 ubuntu-publish-gis-java ubuntu-publish-qgis \
-ubuntu-publish-gis-clj ubuntu-publish-gis-notebooks
+ubuntu-publish-gis-clj ubuntu-publish-gis-notebooks \
+ubuntu-publish-ndvi
 
 .PHONY: all build-all rest debian-rest ubuntu-rest centos-rest base clean \
 base-build py py-rest erl lfe lfe-rest java clojure clj-rest \
@@ -54,7 +56,8 @@ ubuntu-base ubuntu-py ubuntu-py-rest ubuntu-erl ubuntu-lfe ubuntu-lfe-rest \
 ubuntu-java ubuntu-clj ubuntu-clj-rest \
 docker-sample-process debian-docker-sample-process \
 ubuntu-gis ubuntu-qgis ubuntu-gis-py ubuntu-gis-clj \
-ubuntu-publish-java ubuntu-publish-clj ubuntu-publish-gis ubuntu-publish-gis-clj
+ubuntu-publish-java ubuntu-publish-clj ubuntu-publish-gis ubuntu-publish-gis-clj \
+ubuntu-ndvi ubuntu-publish-ndvi
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Common
@@ -98,6 +101,9 @@ base-jmeter:
 
 base-gis:
 	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-gis:$(VERSION) $(SYSTEM)/gis
+
+ndvi:
+	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-ndvi:$(VERSION) $(SYSTEM)/ndvi
 
 base-qgis:
 	@docker build -t $(TAG_PREFIX)/$(SYSTEM)-qgis:$(VERSION) $(SYSTEM)/qgis
@@ -197,6 +203,9 @@ ubuntu-gis:
 ubuntu-gis-py: ubuntu-gis
 	@SYSTEM=ubuntu TAG_FRAGMENT=py make base-frag-gis
 
+ubuntu-ndvi: ubuntu-gis-py
+	@SYSTEM=ubuntu make ndvi
+	
 ubuntu-gis-notebooks: ubuntu-gis-py
 	@SYSTEM=ubuntu TAG_FRAGMENT=notebooks make base-frag-gis
 
@@ -229,6 +238,9 @@ ubuntu-publish-qgis:
 
 ubuntu-publish-gis-py:
 	-@REPO=ubuntu-gis-py make base-publish
+
+ubuntu-publish-ndvi:
+	-@REPO=ubuntu-ndvi make base-publish
 
 ubuntu-publish-gis-notebooks:
 	-@REPO=ubuntu-gis-notebooks make base-publish
